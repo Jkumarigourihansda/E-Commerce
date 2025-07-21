@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About Us</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary: #fff;
+            --secondary: #111;
+            --accent: #222;
+            --highlight: #6c63ff;
+            --feature-bg: #181818;
+            --feature-shadow: rgba(255,255,255,0.04);
+            --card-bg: #181818;
+            --card-shadow: rgba(255,255,255,0.06);
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--secondary);
+            color: var(--primary);
+        }
+        /* Navbar Styles */
+        .navbar {
+            background: var(--primary);
+            box-shadow: 0 2px 8px var(--feature-shadow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(-30px);
+            animation: fadeInDown 1s 0.05s forwards;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 35px;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar li {
+            display: inline-block;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: 500;
+            font-size: 1.08rem;
+            padding: 18px 0;
+            display: block;
+            transition: color 0.2s;
+            position: relative;
+        }
+        .navbar a:hover,
+        .navbar a.active {
+            color: var(--highlight);
+        }
+        .navbar a.active::after,
+        .navbar a:hover::after {
+            content: '';
+            display: block;
+            margin: 0 auto;
+            width: 60%;
+            height: 2px;
+            background: var(--highlight);
+            border-radius: 2px;
+            margin-top: 4px;
+            animation: underlineGrow 0.3s forwards;
+        }
+        @keyframes underlineGrow {
+            from { width: 0; }
+            to { width: 60%; }
+        }
+        @media (max-width: 600px) {
+            .navbar ul {
+                gap: 18px;
+            }
+            .navbar a {
+                font-size: 1rem;
+                padding: 14px 0;
+            }
+        }
+        .header {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 40px 20px 20px 20px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-30px);
+            animation: fadeInDown 1s 0.2s forwards;
+        }
+        .header img {
+            width: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            border: 3px solid var(--highlight);
+        }
+        .about-section {
+            max-width: 900px;
+            margin: 40px auto 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px var(--feature-shadow);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s 0.5s forwards;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 0;
+            justify-content: space-between;
+        }
+        .feature {
+            flex: 1 1 250px;
+            background: var(--feature-bg);
+            border-radius: 10px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 1px 4px var(--feature-shadow);
+            opacity: 0;
+            transform: scale(0.95);
+            animation: fadeInFeature 0.8s forwards;
+            color: var(--primary);
+        }
+        .feature:nth-child(1) { animation-delay: 1s; }
+        .feature:nth-child(2) { animation-delay: 1.2s; }
+        .feature:nth-child(3) { animation-delay: 1.4s; }
+        .feature img {
+            width: 50px;
+            margin-bottom: 10px;
+            filter: grayscale(1) brightness(2);
+        }
+        .testimonials {
+            margin: 40px 0 0 0;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s 1.7s forwards;
+        }
+        .testimonials h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--highlight);
+        }
+        .testimonial-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        .testimonial {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 1px 6px var(--card-shadow);
+            padding: 25px 20px;
+            max-width: 320px;
+            flex: 1 1 280px;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: fadeInTestimonial 0.8s forwards;
+            color: var(--primary);
+        }
+        .testimonial:nth-child(1) { animation-delay: 2s; }
+        .testimonial:nth-child(2) { animation-delay: 2.2s; }
+        .testimonial:nth-child(3) { animation-delay: 2.4s; }
+        .testimonial img {
+            width: 60px;
+            border-radius: 50%;
+            margin-bottom: 12px;
+            border: 2px solid var(--highlight);
+        }
+        .testimonial .name {
+            font-weight: bold;
+            color: var(--highlight);
+            margin-top: 10px;
+        }
+        @media (max-width: 800px) {
+            .features, .testimonial-list {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .about-section {
+                padding: 18px;
+            }
+        }
+        /* Animations */
+        @keyframes fadeInDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInFeature {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes fadeInTestimonial {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="products.html">Shop</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        
+        <div class="cart">
+            🛒
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+    </nav>
+    <div class="header">
+        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=facearea&w=256&q=80" alt="About Project Lily">
+        <h1>About Us</h1>
+        <p>Your trusted destination for quality products and seamless shopping.</p>
+    </div>
+
+    <div class="about-section">
+        <h2>Who We Are</h2>
+        <p>
+            Lily is an innovative e-commerce platform dedicated to providing a curated selection of products, exceptional customer service, and a delightful shopping experience. Our mission is to connect customers with the best brands and products, making online shopping easy, secure, and enjoyable.
+        </p>
+
+        <div class="features">
+            <div class="feature">
+                <img src="https://img.icons8.com/color/96/000000/shopping-cart--v2.png" alt="Wide Selection">
+                <h3>Wide Selection</h3>
+                <p>Choose from thousands of products across multiple categories, handpicked for quality and value.</p>
+            </div>
+            <div class="feature">
+                <img src="https://img.icons8.com/color/96/000000/delivery.png" alt="Fast Delivery">
+                <h3>Fast Delivery</h3>
+                <p>Enjoy quick and reliable shipping, ensuring your orders arrive on time, every time.</p>
+            </div>
+            <div class="feature">
+                <img src="https://img.icons8.com/color/96/000000/lock--v2.png" alt="Secure Payments">
+                <h3>Secure Payments</h3>
+                <p>Shop with confidence using our secure payment gateways and data protection measures.</p>
+            </div>
+        </div>
+
+        <div class="testimonials">
+            <h2>What Our Customers Say</h2>
+            <div class="testimonial-list">
+                <div class="testimonial">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Customer 1">
+                    <p>"Lily made my shopping experience so easy and enjoyable. The delivery was super fast!"</p>
+                    <div class="name">— Priya S.</div>
+                </div>
+                <div class="testimonial">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Customer 2">
+                    <p>"Great selection of products and excellent customer support. Highly recommended!"</p>
+                    <div class="name">— Arjun M.</div>
+                </div>
+                <div class="testimonial">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Customer 3">
+                    <p>"I love the secure payment options and the quality of the items I received."</p>
+                    <div class="name">— Sneha R.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

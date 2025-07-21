@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Reset and base styles */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f7f7f7; color: #222; }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.7s;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .navbar .logo {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        .navbar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+        .navbar ul li a:hover {
+            color: #ffd700;
+        }
+        .navbar .cart {
+            position: relative;
+            font-size: 1.3rem;
+            color: #fff;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .navbar .cart:hover {
+            color: #ffd700;
+        }
+        .navbar .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #ffd700;
+            color: #222;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            font-weight: bold;
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+        .sidebar {
+            width: 220px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 1.5rem;
+            animation: fadeInLeft 0.7s;
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-40px);}
+            to { opacity: 1; transform: translateX(0);}
+        }
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: #2575fc;
+            font-size: 1.1rem;
+        }
+        .sidebar label {
+            display: block;
+            margin-bottom: 0.7rem;
+            cursor: pointer;
+        }
+        .sidebar input[type="checkbox"], .sidebar input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+        .sidebar .price-range {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        /* Product List */
+        .product-list {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            animation: fadeIn 0.7s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .product-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 6px 18px rgba(38, 50, 56, 0.13);
+        }
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 0.7rem;
+            transition: transform 0.3s;
+        }
+        .product-card:hover img {
+            transform: scale(1.06) rotate(-2deg);
+        }
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.4rem;
+            color: #2575fc;
+        }
+        .product-desc {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+            min-height: 40px;
+        }
+        .product-price {
+            font-size: 1.1rem;
+            color: #6a11cb;
+            font-weight: bold;
+            margin-bottom: 0.4rem;
+        }
+        .product-rating {
+            color: #ffd700;
+            margin-bottom: 0.7rem;
+            font-size: 1rem;
+        }
+        .product-actions {
+            display: flex;
+            gap: 0.7rem;
+            margin-bottom: 0.5rem;
+        }
+        .product-actions button {
+            flex: 1;
+            padding: 0.5rem 0;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .product-actions button:hover {
+            background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+            transform: scale(1.04);
+        }
+
+        /* Product Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            left: 0; top: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.45);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.4s;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: #fff;
+            border-radius: 14px;
+            max-width: 700px;
+            width: 95vw;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(38, 50, 56, 0.18);
+            position: relative;
+            animation: popIn 0.4s;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem; right: 1rem;
+            font-size: 1.5rem;
+            color: #2575fc;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover { color: #6a11cb; }
+        .modal-img {
+            flex: 1 1 220px;
+            min-width: 220px;
+            max-width: 260px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+        }
+        .modal-details {
+            flex: 2 1 300px;
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .modal-title {
+            font-size: 1.5rem;
+            color: #2575fc;
+            font-weight: bold;
+        }
+        .modal-desc {
+            color: #444;
+            font-size: 1.05rem;
+        }
+        .modal-price {
+            font-size: 1.2rem;
+            color: #6a11cb;
+            font-weight: bold;
+        }
+        .modal-rating {
+            color: #ffd700;
+            font-size: 1.1rem;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .modal-actions button {
+            flex: 1;
+            padding: 0.7rem 0;
+            border: none;
+            border-radius: 7px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .modal-actions button:hover {
+            background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+            transform: scale(1.04);
+        }
+        .related-products {
+            margin-top: 1.2rem;
+        }
+        .related-products h4 {
+            color: #2575fc;
+            margin-bottom: 0.5rem;
+        }
+        .related-list {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .related-item {
+            background: #f2f6ff;
+            border-radius: 7px;
+            padding: 0.5rem;
+            min-width: 90px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .related-item:hover {
+            background: #e0eaff;
+            transform: scale(1.06);
+        }
+        .related-item img {
+            width: 60px; height: 60px; object-fit: cover; border-radius: 5px;
+            margin-bottom: 0.3rem;
+        }
+        .related-item-title {
+            font-size: 0.9rem;
+            color: #2575fc;
+        }
+
+        /* Scroll to Top Button */
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 300;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(38, 50, 56, 0.18);
+            transition: background 0.2s, transform 0.2s;
+            animation: fadeIn 0.4s;
+        }
+        #scrollTopBtn:hover {
+            background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+            transform: scale(1.08);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container { flex-direction: column; gap: 1.5rem; }
+            .sidebar { width: 100%; }
+            .product-list { grid-template-columns: 1fr 1fr; }
+            .modal-content { flex-direction: column; gap: 1rem; }
+        }
+        @media (max-width: 600px) {
+            .navbar { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .container { padding: 1rem; }
+            .product-list { grid-template-columns: 1fr; }
+            .sidebar { padding: 1rem; }
+            .modal-content { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">LilyShop</div>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="products.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="cart">
+            🛒
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <h3>Category</h3>
+            <label><input type="checkbox" class="category-filter" value="Clothing" checked> Clothing</label>
+            <label><input type="checkbox" class="category-filter" value="Electronics" checked> Electronics</label>
+            <label><input type="checkbox" class="category-filter" value="Books" checked> Books</label>
+            <label><input type="checkbox" class="category-filter" value="Accessories" checked> Accessories</label>
+            <hr style="margin:1rem 0;">
+            <h3>Price</h3>
+            <input type="range" min="10" max="500" value="500" class="price-range" id="priceRange">
+            <div>Up to $<span id="priceValue">500</span></div>
+        </aside>
+
+        <!-- Product List -->
+        <section class="product-list" id="productList">
+            <!-- Products will be rendered here -->
+        </section>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <img src="" alt="Product Image" class="modal-img" id="modalImg">
+            <div class="modal-details">
+                <div class="modal-title" id="modalTitle"></div>
+                <div class="modal-desc" id="modalDesc"></div>
+                <div class="modal-price" id="modalPrice"></div>
+                <div class="modal-rating" id="modalRating"></div>
+                <div class="modal-actions">
+                    <button id="modalAddCart">Add to Cart</button>
+                    <button id="modalBuyNow">Buy Now</button>
+                </div>
+                <div class="related-products">
+                    <h4>Related Products</h4>
+                    <div class="related-list" id="relatedList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" title="Go to top">&#8679;</button>
+
+    <script>
+        // Sample product data
+        const products = [
+            {
+                id: 1,
+                title: "Classic T-Shirt",
+                image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80",
+                desc: "Soft cotton t-shirt in multiple colors.",
+                price: 25,
+                rating: 4.5,
+                category: "Clothing",
+                related: [2, 4]
+            },
+            {
+                id: 2,
+                title: "Wireless Headphones",
+                image: "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=400&q=80",
+                desc: "Noise-cancelling over-ear headphones.",
+                price: 120,
+                rating: 4.7,
+                category: "Electronics",
+                related: [1, 3]
+            },
+            {
+                id: 3,
+                title: "Inspirational Book",
+                image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=400&q=80",
+                desc: "A book to motivate and inspire you.",
+                price: 18,
+                rating: 4.2,
+                category: "Books",
+                related: [2, 4]
+            },
+            {
+                id: 4,
+                title: "Leather Wallet",
+                image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+                desc: "Premium leather wallet for everyday use.",
+                price: 45,
+                rating: 4.6,
+                category: "Accessories",
+                related: [1, 3]
+            },
+            {
+                id: 5,
+                title: "Smart Watch",
+                image: "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=400&q=80",
+                desc: "Track your fitness and notifications.",
+                price: 199,
+                rating: 4.8,
+                category: "Electronics",
+                related: [2, 4]
+            },
+            {
+                id: 6,
+                title: "Fashion Sunglasses",
+                image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+                desc: "Stylish sunglasses for all seasons.",
+                price: 35,
+                rating: 4.3,
+                category: "Accessories",
+                related: [1, 4]
+            }
+        ];
+
+        // State
+        let cartCount = 0;
+        let selectedCategories = new Set(["Clothing", "Electronics", "Books", "Accessories"]);
+        let maxPrice = 500;
+
+        // Elements
+        const productList = document.getElementById('productList');
+        const priceRange = document.getElementById('priceRange');
+        const priceValue = document.getElementById('priceValue');
+        const cartCountEl = document.getElementById('cartCount');
+        const categoryFilters = document.querySelectorAll('.category-filter');
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+        // Modal Elements
+        const productModal = document.getElementById('productModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalRating = document.getElementById('modalRating');
+        const modalAddCart = document.getElementById('modalAddCart');
+        const modalBuyNow = document.getElementById('modalBuyNow');
+        const relatedList = document.getElementById('relatedList');
+
+        // Render products
+        function renderProducts() {
+            productList.innerHTML = '';
+            const filtered = products.filter(p =>
+                selectedCategories.has(p.category) && p.price <= maxPrice
+            );
+            if (filtered.length === 0) {
+                productList.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#888;">No products found.</div>';
+                return;
+            }
+            filtered.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.title}">
+                    <div class="product-title">${product.title}</div>
+                    <div class="product-desc">${product.desc}</div>
+                    <div class="product-price">$${product.price}</div>
+                    <div class="product-rating">${'★'.repeat(Math.floor(product.rating))}${product.rating % 1 >= 0.5 ? '½' : ''}</div>
+                    <div class="product-actions">
+                        <button class="add-cart-btn">Add to Cart</button>
+                        <button class="buy-now-btn">Buy Now</button>
+                    </div>
+                `;
+                // Open modal on card click (except button clicks)
+                card.addEventListener('click', e => {
+                    if (e.target.tagName === 'BUTTON') return;
+                    openModal(product.id);
+                });
+                // Add to Cart
+                card.querySelector('.add-cart-btn').addEventListener('click', e => {
+                    e.stopPropagation();
+                    cartCount++;
+                    cartCountEl.textContent = cartCount;
+                    animateCart();
+                });
+                // Buy Now
+                card.querySelector('.buy-now-btn').addEventListener('click', e => {
+                    e.stopPropagation();
+                    openModal(product.id);
+                });
+                productList.appendChild(card);
+            });
+        }
+
+        // Animate cart count
+        function animateCart() {
+            cartCountEl.style.transform = 'scale(1.3)';
+            setTimeout(() => cartCountEl.style.transform = '', 200);
+        }
+
+        // Category filter
+        categoryFilters.forEach(cb => {
+            cb.addEventListener('change', () => {
+                if (cb.checked) selectedCategories.add(cb.value);
+                else selectedCategories.delete(cb.value);
+                renderProducts();
+            });
+        });
+
+        // Price filter
+        priceRange.addEventListener('input', () => {
+            maxPrice = parseInt(priceRange.value, 10);
+            priceValue.textContent = maxPrice;
+            renderProducts();
+        });
+
+        // Modal logic
+        let currentProduct = null;
+        function openModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            currentProduct = product;
+            modalImg.src = product.image;
+            modalTitle.textContent = product.title;
+            modalDesc.textContent = product.desc;
+            modalPrice.textContent = `$${product.price}`;
+            modalRating.innerHTML = '★'.repeat(Math.floor(product.rating)) + (product.rating % 1 >= 0.5 ? '½' : '');
+            // Related products
+            relatedList.innerHTML = '';
+            product.related.forEach(relId => {
+                const rel = products.find(p => p.id === relId);
+                if (rel) {
+                    const relDiv = document.createElement('div');
+                    relDiv.className = 'related-item';
+                    relDiv.innerHTML = `
+                        <img src="${rel.image}" alt="${rel.title}">
+                        <div class="related-item-title">${rel.title}</div>
+                    `;
+                    relDiv.addEventListener('click', () => openModal(rel.id));
+                    relatedList.appendChild(relDiv);
+                }
+            });
+            productModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            productModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        modalClose.addEventListener('click', closeModal);
+        productModal.addEventListener('click', e => {
+            if (e.target === productModal) closeModal();
+        });
+        // Modal Add to Cart
+        modalAddCart.addEventListener('click', () => {
+            cartCount++;
+            cartCountEl.textContent = cartCount;
+            animateCart();
+            closeModal();
+        });
+        // Modal Buy Now
+        modalBuyNow.addEventListener('click', () => {
+            alert('Proceeding to buy: ' + currentProduct.title);
+            closeModal();
+        });
+
+        // Scroll to Top Button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollTopBtn.style.display = "block";
+            } else {
+                scrollTopBtn.style.display = "none";
+            }
+        };
+        scrollTopBtn.onclick = function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // Initial render
+        renderProducts();
+    </script>
+</body>
+</html></div></html>
