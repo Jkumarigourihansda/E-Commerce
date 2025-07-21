@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart - Project Lily</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary: #fff;
+            --secondary: #111;
+            --accent: #000;
+            --border-radius: 10px;
+            --transition: 0.3s cubic-bezier(.4,0,.2,1);
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--primary);
+            color: var(--secondary);
+            min-height: 100vh;
+        }
+        /* Navbar */
+        nav {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            animation: fadeInDown 0.7s;
+        }
+        nav .logo {
+            font-weight: bold;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            transition: color var(--transition);
+        }
+        nav ul li a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color var(--transition);
+            position: relative;
+        }
+        nav ul li a::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width var(--transition);
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+        }
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        nav ul li a:hover {
+            color: #ccc;
+        }
+
+        /* Cart Table */
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: var(--primary);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            padding: 2rem;
+            animation: fadeInUp 0.7s;
+        }
+        h2 {
+            margin-top: 0;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #f8f8f8;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        td img {
+            width: 60px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform var(--transition);
+        }
+        td img:hover {
+            transform: scale(1.08) rotate(-2deg);
+        }
+        .quantity-input {
+            width: 50px;
+            padding: 0.3rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 1rem;
+        }
+        .total-row {
+            font-weight: bold;
+            background: #f8f8f8;
+        }
+        .checkout-btn {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background var(--transition), transform var(--transition);
+            margin-top: 1rem;
+            float: right;
+        }
+        .checkout-btn:hover {
+            background: #222;
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        /* Checkout Page */
+        .checkout-section {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            animation: fadeInUp 0.7s;
+        }
+        .order-summary, .shipping-form {
+            flex: 1 1 350px;
+            background: #fafafa;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+        .order-summary h3, .shipping-form h3 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .order-summary ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1rem 0;
+        }
+        .order-summary li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .order-summary .total {
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-top: 1px solid #eee;
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .shipping-form label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+        }
+        .shipping-form input, .shipping-form textarea {
+            width: 100%;
+            padding: 0.7rem;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            background: #fff;
+            transition: border var(--transition);
+        }
+        .shipping-form input:focus, .shipping-form textarea:focus {
+            border: 1.5px solid var(--accent);
+            outline: none;
+        }
+        .place-order-btn {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background var(--transition), transform var(--transition);
+            margin-top: 1rem;
+            width: 100%;
+        }
+        .place-order-btn:hover {
+            background: #222;
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        /* Order Confirmation */
+        .confirmation-section {
+            max-width: 500px;
+            margin: 4rem auto;
+            background: #fafafa;
+            border-radius: var(--border-radius);
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            animation: fadeInUp 0.7s;
+        }
+        .confirmation-section h2 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .order-no {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #222;
+            margin-top: 1rem;
+            letter-spacing: 2px;
+            animation: popIn 0.7s;
+        }
+        .confirmation-section .checkmark {
+            font-size: 3rem;
+            color: #27ae60;
+            margin-bottom: 1rem;
+            animation: popIn 0.7s;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0;}
+            80% { transform: scale(1.1);}
+            100% { transform: scale(1); opacity: 1;}
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">Lily</div>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="products.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="cart.html">Cart</a></li>
+        </ul>
+    </nav>
+
+    <!-- Cart Page -->
+    <div class="container" id="cart-page">
+        <h2>Your Cart</h2>
+        <table id="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Title</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Cart items will be injected here by JS -->
+            </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="4" style="text-align:right;">Total:</td>
+                    <td id="cart-total">$0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+        <button class="checkout-btn" id="go-checkout">Proceed to Checkout</button>
+    </div>
+
+    <!-- Checkout Page (hidden by default) -->
+    <div class="container" id="checkout-page" style="display:none;">
+        <h2>Checkout</h2>
+        <div class="checkout-section">
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <ul id="order-summary-list">
+                    <!-- Order summary items -->
+                </ul>
+                <div class="total">Total: <span id="order-summary-total">$0.00</span></div>
+            </div>
+            <form class="shipping-form" id="shipping-form">
+                <h3>Shipping Information</h3>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" required>
+                <label for="address">Address</label>
+                <textarea id="address" rows="2" required></textarea>
+                <label for="city">City</label>
+                <input type="text" id="city" required>
+                <label for="zip">ZIP/Postal Code</label>
+                <input type="text" id="zip" required>
+                <label for="country">Country</label>
+                <input type="text" id="country" required>
+                <button type="submit" class="place-order-btn">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order Confirmation Page (hidden by default) -->
+    <div class="confirmation-section" id="confirmation-page" style="display:none;">
+        <div class="checkmark">&#10003;</div>
+        <h2>Order Confirmed!</h2>
+        <p>Thank you for your purchase. Your order has been placed successfully.</p>
+        <div class="order-no">Order No: <span id="order-number"></span></div>
+    </div>
+
+    <script>
+        // Demo cart data
+        let cart = [
+            {
+                id: 1,
+                title: "Black Sneakers",
+                image: "https://images.unsplash.com/photo-1517260911205-8a3bfa7c7e49?auto=format&fit=crop&w=80&q=80",
+                price: 59.99,
+                quantity: 2
+            },
+            {
+                id: 2,
+                title: "White T-shirt",
+                image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=80&q=80",
+                price: 19.99,
+                quantity: 1
+            }
+        ];
+
+        // Utility functions
+        function formatPrice(num) {
+            return "$" + num.toFixed(2);
+        }
+        function calcTotal() {
+            return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        }
+
+        // Render Cart Table
+        function renderCart() {
+            const tbody = document.querySelector("#cart-table tbody");
+            tbody.innerHTML = "";
+            cart.forEach((item, idx) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><img src="${item.image}" alt="${item.title}"></td>
+                    <td>${item.title}</td>
+                    <td>
+                        <input type="number" min="1" class="quantity-input" value="${item.quantity}" data-idx="${idx}">
+                    </td>
+                    <td>${formatPrice(item.price)}</td>
+                    <td>${formatPrice(item.price * item.quantity)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            document.getElementById("cart-total").textContent = formatPrice(calcTotal());
+        }
+
+        // Render Order Summary
+        function renderOrderSummary() {
+            const ul = document.getElementById("order-summary-list");
+            ul.innerHTML = "";
+            cart.forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `<span>${item.title} x${item.quantity}</span><span>${formatPrice(item.price * item.quantity)}</span>`;
+                ul.appendChild(li);
+            });
+            document.getElementById("order-summary-total").textContent = formatPrice(calcTotal());
+        }
+
+        // Quantity change handler
+        document.addEventListener("input", function(e) {
+            if (e.target.classList.contains("quantity-input")) {
+                const idx = +e.target.dataset.idx;
+                let val = parseInt(e.target.value, 10);
+                if (isNaN(val) || val < 1) val = 1;
+                cart[idx].quantity = val;
+                renderCart();
+            }
+        });
+
+        // Checkout navigation
+        document.getElementById("go-checkout").onclick = function() {
+            document.getElementById("cart-page").style.display = "none";
+            document.getElementById("checkout-page").style.display = "block";
+            renderOrderSummary();
+            window.scrollTo({top:0, behavior:'smooth'});
+        };
+
+        // Place order handler
+        document.getElementById("shipping-form").onsubmit = function(e) {
+            e.preventDefault();
+            document.getElementById("checkout-page").style.display = "none";
+            document.getElementById("confirmation-page").style.display = "block";
+            // Generate random order number
+            document.getElementById("order-number").textContent = "LILY" + Math.floor(Math.random()*90000+10000);
+            window.scrollTo({top:0, behavior:'smooth'});
+        };
+
+        // Initial render
+        renderCart();
+    </script>
+</body>
+</html>

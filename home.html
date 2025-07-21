@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lily E-Commerce - Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-bg: #fff;
+            --primary-text: #000;
+            --accent-gold: #FFD700;
+            --accent-pink: #FFC0CB;
+            --navbar-height: 70px;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--primary-bg);
+            color: var(--primary-text);
+        }
+        /* Navbar */
+        .navbar {
+            height: var(--navbar-height);
+            background: var(--primary-bg);
+            color: var(--primary-text);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .navbar nav a {
+            color: var(--primary-text);
+            text-decoration: none;
+            margin: 0 18px;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+        .navbar nav a:hover {
+            color: var(--accent-gold);
+        }
+        /* Slider */
+        .slider {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            height: 400px;
+            background: #eee;
+        }
+        .slides {
+            display: flex;
+            width: 300%;
+            animation: slideAnim 12s infinite;
+        }
+        .slide {
+            width: 100%;
+            flex-shrink: 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #fff;
+            height: 400px;
+        }
+        .slide img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+        .slide-caption {
+            position: absolute;
+            left: 50%;
+            top: 60%;
+            transform: translate(-50%, -50%);
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 2px 8px #000;
+            background: rgba(0,0,0,0.2);
+            padding: 12px 32px;
+            border-radius: 8px;
+        }
+        @keyframes slideAnim {
+            0% {margin-left: 0;}
+            30% {margin-left: 0;}
+            33% {margin-left: -100%;}
+            63% {margin-left: -100%;}
+            66% {margin-left: -200%;}
+            96% {margin-left: -200%;}
+            100% {margin-left: 0;}
+        }
+        /* Shop by Category */
+        .categories {
+            max-width: 1200px;
+            margin: 60px auto 0 auto;
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .category-card {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            width: 180px;
+            text-align: center;
+            padding: 24px 0 12px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            transition: box-shadow 0.2s, transform 0.2s;
+            cursor: pointer;
+        }
+        .category-card:hover {
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+            transform: translateY(-4px) scale(1.03);
+            border-color: var(--accent-gold);
+        }
+        .category-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 12px;
+            border: 2px solid #eee;
+        }
+        .category-card span {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--primary-text);
+        }
+        /* Latest Products */
+        .latest-products {
+            max-width: 1200px;
+            margin: 60px auto 0 auto;
+        }
+        .latest-products h2 {
+            font-size: 2rem;
+            margin-bottom: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .product-list {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product-card {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            width: 220px;
+            padding: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            transition: box-shadow 0.2s, transform 0.2s;
+            text-align: center;
+        }
+        .product-card:hover {
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+            transform: translateY(-4px) scale(1.03);
+            border-color: var(--accent-gold);
+        }
+        .product-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .product-card .title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .product-card .price {
+            color: var(--accent-gold);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .product-card .btn {
+            background: var(--primary-text);
+            color: var(--primary-bg);
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .product-card .btn:hover {
+            background: var(--accent-gold);
+            color: var(--primary-text);
+        }
+        /* Features */
+        .features {
+            max-width: 1200px;
+            margin: 60px auto 0 auto;
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .feature-card {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            width: 260px;
+            padding: 32px 20px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
+            display: block;
+        }
+        .feature-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .feature-card p {
+            font-size: 1rem;
+            color: #444;
+        }
+        /* Footer */
+        .footer {
+            background: var(--primary-text);
+            color: var(--primary-bg);
+            padding: 40px 0 20px 0;
+            text-align: center;
+            margin-top: 60px;
+        }
+        .footer .footer-links a {
+            color: var(--primary-bg);
+            margin: 0 14px;
+            text-decoration: none;
+            font-size: 1rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .footer .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent-gold);
+        }
+        .footer .copyright {
+            margin-top: 18px;
+            font-size: 0.95rem;
+            opacity: 0.7;
+        }
+        /* Scroll to Top */
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 999;
+            background: var(--primary-text);
+            color: var(--primary-bg);
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: background 0.2s;
+        }
+        #scrollTopBtn:hover {
+            background: var(--accent-gold);
+            color: var(--primary-text);
+        }
+        @media (max-width: 900px) {
+            .categories, .features, .product-list {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 16px;
+            }
+        }
+    </style>
+    <!-- For icons (features section) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">Lily</div>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="cart.html"><i class="fa fa-shopping-bag"></i></a>
+        </nav>
+    </div>
+
+    <!-- Slider -->
+    <section class="slider">
+        <div class="slides">
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80" alt="Luxury Fashion">
+                <div class="slide-caption">Luxury Fashion Collection</div>
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="Minimalist Style">
+                <div class="slide-caption">Minimalist Style, Maximum Impact</div>
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80" alt="New Arrivals">
+                <div class="slide-caption">New Arrivals: Shop Now</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop by Category -->
+    <section class="categories">
+        <div class="category-card">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Women">
+            <span>Women</span>
+        </div>
+        <div class="category-card">
+            <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Men">
+            <span>Men</span>
+        </div>
+        <div class="category-card">
+            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Accessories">
+            <span>Accessories</span>
+        </div>
+        <div class="category-card">
+            <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Shoes">
+            <span>Shoes</span>
+        </div>
+    </section>
+
+    <!-- Latest Products -->
+    <section class="latest-products">
+        <h2>Latest Products</h2>
+        <div class="product-list">
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Product 1">
+                <div class="title">Classic Black Dress</div>
+                <div class="price">$120</div>
+                <button class="btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Product 2">
+                <div class="title">Gold Accent Watch</div>
+                <div class="price">$250</div>
+                <button class="btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Product 3">
+                <div class="title">Minimalist Sneakers</div>
+                <div class="price">$90</div>
+                <button class="btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Product 4">
+                <div class="title">Soft Pink Handbag</div>
+                <div class="price">$180</div>
+                <button class="btn">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="feature-card">
+            <i class="fa fa-truck"></i>
+            <h4>Free Shipping</h4>
+            <p>On all orders above $100</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa fa-undo"></i>
+            <h4>Easy Returns</h4>
+            <p>30-day hassle-free returns</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa fa-lock"></i>
+            <h4>Secure Payment</h4>
+            <p>100% secure payment</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa fa-star"></i>
+            <h4>Premium Quality</h4>
+            <p>Luxury & fashion guaranteed</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="home.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="cart.html">Cart</a>
+        </div>
+        <div class="copyright">
+            &copy; 2024 Lily. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" title="Go to top"><i class="fa fa-arrow-up"></i></button>
+
+    <script>
+        // Scroll to top button
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollBtn.style.display = "block";
+            } else {
+                scrollBtn.style.display = "none";
+            }
+        };
+        scrollBtn.onclick = function() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        };
+    </script>
+</body>
+</html>
