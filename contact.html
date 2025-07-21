@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        /* Navbar styles */
+        .navbar {
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: fadeInDown 0.7s;
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .navbar .logo {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #fda085;
+            letter-spacing: 1px;
+            padding: 18px 0;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar ul li {
+            margin: 0 18px;
+        }
+        .navbar ul li:last-child {
+            margin-right: 0;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #444;
+            font-size: 1.08rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            position: relative;
+            padding: 8px 0;
+        }
+        .navbar a.active,
+        .navbar a:hover {
+            color: #fda085;
+        }
+        .navbar a.active::after,
+        .navbar a:hover::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: #fda085;
+            border-radius: 2px;
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            animation: underline 0.3s;
+        }
+        @keyframes underline {
+            from { width: 0;}
+            to { width: 100%;}
+        }
+        .navbar .cart-icon {
+            font-size: 1.2rem;
+            color: #444;
+            transition: color 0.2s;
+            margin-left: 8px;
+        }
+        .navbar .cart-icon:hover {
+            color: #fda085;
+        }
+        @media (max-width: 700px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0 12px;
+            }
+            .navbar .logo {
+                padding: 14px 0 8px 0;
+            }
+            .navbar ul {
+                flex-direction: column;
+                width: 100%;
+            }
+            .navbar ul li {
+                margin: 8px 0;
+            }
+        }
+        /* Contact page styles (unchanged) */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            display: flex;
+            overflow: hidden;
+            animation: fadeIn 1.2s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .contact-info {
+            background: #fda085;
+            color: #fff;
+            padding: 40px 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideInLeft 1s;
+        }
+        @keyframes slideInLeft {
+            from { transform: translateX(-60px); opacity: 0;}
+            to { transform: translateX(0); opacity: 1;}
+        }
+        .contact-info h2 {
+            margin-bottom: 20px;
+        }
+        .contact-info p {
+            margin: 10px 0;
+        }
+        .contact-info .info-item {
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+        }
+        .contact-info .info-item i {
+            margin-right: 10px;
+        }
+        .contact-form {
+            flex: 2;
+            padding: 40px 30px;
+            background: #fff;
+            animation: slideInRight 1s;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(60px); opacity: 0;}
+            to { transform: translateX(0); opacity: 1;}
+        }
+        .contact-form h2 {
+            margin-bottom: 20px;
+            color: #fda085;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #444;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #fda085;
+            outline: none;
+        }
+        .form-group .error {
+            color: #e74c3c;
+            font-size: 0.95em;
+            margin-top: 4px;
+        }
+        .contact-form button {
+            background: #fda085;
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .contact-form button:hover {
+            background: #f6d365;
+            color: #fda085;
+            transform: translateY(-2px) scale(1.03);
+        }
+        .success-message {
+            color: #27ae60;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+        @media (max-width: 700px) {
+            .container {
+                flex-direction: column;
+            }
+            .contact-info, .contact-form {
+                padding: 30px 16px;
+            }
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">Lily</div>
+        <ul>
+            <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="products.html"><i class="fas fa-store"></i> Shop</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contact.html" class="active"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a href="cart.html"><i class="fas fa-shopping-cart cart-icon"></i> Cart</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="contact-info">
+            <h2>Contact Information</h2>
+            <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>123 Main Street, City, Country</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-envelope"></i>
+                <span>info@example.com</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-phone"></i>
+                <span>+1 234 567 890</span>
+            </div>
+            <p>We'd love to hear from you! Fill out the form and we'll get back to you soon.</p>
+        </div>
+        <div class="contact-form">
+            <h2>Send Us a Message</h2>
+            <form id="contactForm" novalidate>
+                <div class="form-group">
+                    <label for="name">Name *</label>
+                    <input type="text" id="name" name="name" required>
+                    <div class="error" id="nameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error" id="emailError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                    <div class="error" id="messageError"></div>
+                </div>
+                <button type="submit">Send Message</button>
+                <div class="success-message" id="successMessage">Thank you! Your message has been sent.</div>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Vanilla JS + jQuery validation
+        function validateEmail(email) {
+            // Simple email regex
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        $(function() {
+            $('#contactForm').on('submit', function(e) {
+                e.preventDefault();
+                let valid = true;
+
+                // Clear previous errors
+                $('.error').text('');
+                $('#successMessage').hide();
+
+                // Name validation
+                const name = $('#name').val().trim();
+                if (name.length < 2) {
+                    $('#nameError').text('Please enter your name (at least 2 characters).');
+                    valid = false;
+                }
+
+                // Email validation
+                const email = $('#email').val().trim();
+                if (!validateEmail(email)) {
+                    $('#emailError').text('Please enter a valid email address.');
+                    valid = false;
+                }
+
+                // Message validation
+                const message = $('#message').val().trim();
+                if (message.length < 10) {
+                    $('#messageError').text('Message should be at least 10 characters.');
+                    valid = false;
+                }
+
+                if (valid) {
+                    // Simulate successful submission
+                    $('#successMessage').fadeIn(500).delay(2000).fadeOut(500);
+                    $('#contactForm')[0].reset();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
